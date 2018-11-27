@@ -1,10 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Icon from "./Icon";
 import PropTypes from "prop-types";
-
-const modalRoot = document.getElementById("modal");
 
 class Portal extends Component {
   constructor() {
@@ -12,9 +10,17 @@ class Portal extends Component {
     this.el = document.createElement("div");
   }
 
-  componentDidMount = () => modalRoot.appendChild(this.el);
+  componentDidMount = () => {
+    const modalRoot = document.getElementById("modal");
 
-  componentWillUnmount = () => modalRoot.removeChild(this.el);
+    modalRoot.appendChild(this.el);
+  };
+
+  componentWillUnmount = () => {
+    const modalRoot = document.getElementById("modal");
+
+    modalRoot.removeChild(this.el);
+  };
 
   render() {
     const { children } = this.props;
@@ -24,7 +30,7 @@ class Portal extends Component {
 
 export default class Modal extends Component {
   render() {
-    const { children, toggle, on } = this.props;
+     const { children, toggle, on } = this.props;
     return (
       <Portal>
         {on && (
@@ -33,7 +39,7 @@ export default class Modal extends Component {
               <CloseButton onClick={toggle}>
                 <Icon name="close" />
               </CloseButton>
-              <div>{children}</div>
+              <Fragment>{children}</Fragment>
             </ModalCard>
             <Background onClick={toggle} />
           </ModalWrapper>
