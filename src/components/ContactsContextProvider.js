@@ -5,9 +5,28 @@ export default class ContactsContextProvider extends Component {
   state = {
     contacts: []
   };
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    const randomPeopleRes = await fetch(
+      "https://randomuser.me/api/?page=5&results=21&seed=abc"
+    ).then(data => data.json());
+    const { results: randomPeople } = randomPeopleRes;
+    //format contacts received from api to fit structure of components (implemented after components were made)
+    const contacts = randomPeople.map(
+      ({ name, location, phone: phone_number, picture: image_url, email }) => ({
+        id: Math.round(Math.random() * 100000000),
+        name: `${name.first} ${name.last}`,
+        location: `${location.city}, ${location.state}`,
+        phone_number: phone_number.replace(
+          /(\d{3})(\d{3})(\d{4})/,
+          "($1) $2-$3"
+        ),
+        image_url: image_url.large,
+        email
+      })
+    );
+    console.log(randomPeople);
     this.setState({
-      contacts: this.dummyContacts
+      contacts
     });
   };
 
