@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Provider } from "./ContactsContext";
+import { formatter } from "../helpers";
 
 export default class ContactsContextProvider extends Component {
   state = {
@@ -11,23 +12,7 @@ export default class ContactsContextProvider extends Component {
     ).then(data => data.json());
     const { results: randomPeople } = randomPeopleRes;
     //format contacts received from api to fit structure of components (implemented after components were made)
-    const contacts = randomPeople.map(
-      ({ name, location, phone: phone_number, picture: image_url, email }) => ({
-        id: Math.round(Math.random() * 100000000),
-        name: `${name.first} ${name.last}`,
-        location: `${location.city}, ${location.state}`,
-        phone_number: phone_number.replace(
-          /(\d{3})(\d{3})(\d{4})/,
-          "($1) $2-$3"
-        ),
-        image_url: image_url.large,
-        email
-      })
-    );
-    console.log(randomPeople);
-    this.setState({
-      contacts
-    });
+    this.setState({ contacts: formatter(randomPeople) });
   };
 
   removeContact = id => {
@@ -60,41 +45,6 @@ export default class ContactsContextProvider extends Component {
 
     this.setState({ contacts: updatedContacts });
   };
-
-  dummyContacts = [
-    {
-      id: 70219577,
-      name: "Albert Einstein",
-      image_url:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKLxacs6mf33EYjU5tSXJJgx3byM7_Ut3UhED1mu7BNGOamBd3TTcToo",
-      email: "aeinstein@example.com",
-      phone_number: "15555555555"
-    },
-    {
-      id: 21030349,
-      name: "Alan Turing",
-      image_url:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Alan_Turing_Aged_16.jpg/220px-Alan_Turing_Aged_16.jpg",
-      email: "turing@example.com",
-      phone_number: "16666666666"
-    },
-    {
-      id: 70384954,
-      name: "Isaac Newton",
-      image_url:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/GodfreyKneller-IsaacNewton-1689.jpg/220px-GodfreyKneller-IsaacNewton-1689.jpg",
-      email: "newton@example.com",
-      phone_number: "15588855555"
-    },
-    {
-      id: 703832904,
-      name: "Benjamin Franklin",
-      image_url:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Benjamin_Franklin_by_Joseph_Duplessis_1778.jpg/440px-Benjamin_Franklin_by_Joseph_Duplessis_1778.jpg",
-      email: "franklin@example.com",
-      phone_number: "15588855577"
-    }
-  ];
 
   render() {
     return (
