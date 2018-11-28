@@ -27,6 +27,7 @@ class Contacts extends Component {
                   img={contact.image_url}
                   number={contact.phone_number}
                   id={contact.id}
+                  location={contact.location}
                 />
               ))}
             </div>
@@ -46,7 +47,7 @@ const ContactsContainer = styled.div`
   background: #282c34;
   #contacts {
     display: grid;
-    grid-template-columns: repeat(4, .8fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 

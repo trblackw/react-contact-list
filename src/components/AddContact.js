@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Button } from "./Contacts";
 import { Link } from "react-router-dom";
 import { Consumer } from "./ContactsContext";
 import Icon from "./elements/Icon";
@@ -67,9 +66,8 @@ export default class AddContact extends Component {
           >
             <h1>New Contact</h1>
             <Link to="/" style={{ position: "absolute", top: 40 }}>
-              <Icon name="back" color="black" />
+              <Icon name="back" color="black" className="back-icon" />
             </Link>
-            <hr />
             <div id="form-add">
               <label htmlFor="name">Contact Name</label>
               <input
@@ -140,7 +138,7 @@ export const ContactForm = styled.form`
   svg {
     margin-top: 10px;
     &:hover {
-      cursor: default;
+      cursor: pointer;
     }
   }
 
@@ -185,6 +183,9 @@ const ContactButton = styled.button`
   background: ${props => props.color};
   padding: 0.5em;
   border-radius: 4px;
+  &:hover {
+    cursor: pointer;
+  }
   a {
     color: black;
   }

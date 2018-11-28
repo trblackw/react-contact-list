@@ -8,7 +8,7 @@ import { Button } from "./Contacts";
 import PropTypes from "prop-types";
 import Icon from "./elements/Icon";
 
-const Contact = ({ name, img, email, number, id }) => (
+const Contact = ({ name, img, email, number, id, location }) => (
   <Consumer>
     {({ remove }) => (
       <ContactContainer className="drop-shadow">
@@ -17,9 +17,16 @@ const Contact = ({ name, img, email, number, id }) => (
         </ContactImageContainer>
         <div id="details">
           <h3>{name}</h3>
+          <Icon name="email" color="red" />
           <small>{email}</small>
           <br />
+          <Icon name="phone" color="blue" />
           <small>{number}</small>
+          <br />
+          <Icon name="globe" color="green" />
+          <small>
+            <em>{location}</em>
+          </small>
         </div>
         <div className="button-group">
           <Link to={`/${id}`}>
