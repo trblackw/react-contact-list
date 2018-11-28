@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-const API_KEY = "AIzaSyDZUuStMg8IGiJ2LJ0q4yDH2ytAkH-sdT0";
 // react-contact-list-223918
 
 export default class GoogleContacts extends Component {
