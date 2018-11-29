@@ -13,14 +13,7 @@ export default class EditContact extends Component {
           return (
             contact !== undefined && (
               <ContactContainer className="drop-shadow">
-                <ContactToEdit
-                  id={Number(selectedID)}
-                  name={contact.name}
-                  email={contact.email}
-                  image_url={contact.image_url}
-                  phone_number={contact.phone_number}
-                  update={update}
-                />
+                   <ContactToEdit {...contact} id={Number(selectedID)} update={update} />
               </ContactContainer>
             )
           );
