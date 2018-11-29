@@ -11,12 +11,8 @@ export default class AddContact extends Component {
     email: "",
     phone_number: "",
     image_url: "",
+    location: "",
     contactAdded: false
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.contactForm.reset();
   };
 
   isValidEmail = email => {
@@ -44,24 +40,27 @@ export default class AddContact extends Component {
         image_url:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Neil_deGrasse_Tyson_in_June_2017_%28cropped%29.jpg/200px-Neil_deGrasse_Tyson_in_June_2017_%28cropped%29.jpg"
       },
-      () => {
-        console.log(this.state);
-        this.image.defaultValue = this.state.image_url;
-      }
+      () => (this.image.defaultValue = this.state.image_url)
     );
   };
 
-  handleName = e => this.setState({ name: e.target.value });
-  handleEmail = e => this.setState({ email: e.target.value });
-  handleNumber = e => this.setState({ phone_number: e.target.value });
-  handleImage = e => this.setState({ image_url: e.target.value });
+  handleInput = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+  handleSubmit = (e, action) => {
+    e.preventDefault();
+    this.contactForm.reset();
+    action(this.state);
+  };
 
   render() {
     return (
       <Consumer>
         {({ add }) => (
           <ContactForm
-            onSubmit={e => this.handleSubmit(e)}
+            onSubmit={e => this.handleSubmit(e, add)}
             ref={contactForm => (this.contactForm = contactForm)}
           >
             <h1>New Contact</h1>
@@ -72,21 +71,24 @@ export default class AddContact extends Component {
               <label htmlFor="name">Contact Name</label>
               <input
                 type="text"
+                name="name"
                 placeholder="name"
-                onChange={this.handleName}
+                onChange={this.handleInput}
               />
               <label htmlFor="email">Contact Email</label>
               <input
                 type="email"
                 placeholder="email"
-                onChange={this.handleEmail}
+                name="email"
+                onChange={this.handleInput}
                 onBlur={() => this.isValidEmail(this.state.email)}
               />
               <label htmlFor="number">Contact Number</label>
               <input
                 type="text"
+                name="phone_number"
                 placeholder="number"
-                onChange={this.handleNumber}
+                onChange={this.handleInput}
                 ref={number => (this.number = number)}
                 onBlur={() => this.formatNumber(this.number.value)}
               />
@@ -97,7 +99,8 @@ export default class AddContact extends Component {
               <input
                 type="text"
                 placeholder="image"
-                onChange={this.handleImage}
+                name="image_url"
+                onChange={this.handleInput}
                 ref={image => (this.image = image)}
               />
             </div>
@@ -107,7 +110,6 @@ export default class AddContact extends Component {
                 color="lightblue"
                 onClick={() => {
                   this.addContact();
-                  add(this.state);
                 }}
               >
                 Add
