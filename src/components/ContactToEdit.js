@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { ContactForm } from "./AddContact";
 import { ContactImageContainer } from "./Contact";
 import { Button } from "./Contacts";
-import { Link } from "react-router-dom";
-import { reducer } from "../helpers";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import Icon from "./elements/Icon";
 
@@ -12,28 +11,30 @@ export default class ContactToEdit extends Component {
     name: "",
     email: "",
     phone_number: "",
-    image_url: ""
+    image_url: "",
+    editing: true
   };
 
-  //maintain id
-  static getDerivedStateFromProps = ({ id }) => ({ id });
+  componentDidMount = () => {
+    const { name, email, phone_number, image_url, id } = this.props;
+    this.setState({ id, name, email, phone_number, image_url });
+  };
 
-  collectState = () => {
-    const inputs = [...this.contactForm.querySelectorAll("input")];
-    const { name, email, phone_number, image_url } = reducer(inputs);
-    //reducer function returns update { key-value pairs } for edit contact form
-    this.setState({ name, email, phone_number, image_url }, () =>
-      this.props.update(this.state)
-    );
+  handleEdit = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.setState({ editing: false }, () => this.props.update(this.state));
   };
 
   render() {
-    const { name, email, phone_number, image_url } = this.props;
+    const { name, email, phone_number, image_url } = this.state;
     return (
-      <ContactForm
-        onSubmit={e => e.preventDefault()}
-        ref={contactForm => (this.contactForm = contactForm)}
-      >
+      <ContactForm role="form" onSubmit={this.handleSubmit}>
         <h4>Editting {name}'s contact</h4>
         <ContactImageContainer>
           <img src={image_url} alt="contact" />
@@ -41,23 +42,39 @@ export default class ContactToEdit extends Component {
         <Icon name="edit" color="teal" />
 
         <div id="form-edit">
-          <input type="text" name="name" defaultValue={name} autoFocus />
-          <input type="email" name="email" defaultValue={email} />
-          <input type="text" name="phone_number" defaultValue={phone_number} />
-          <input type="text" name="image_url" defaultValue={image_url} />
-          <Button
-            style={{ width: "auto" }}
-            type="button"
-            onClick={this.collectState}
-          >
+          <input
+            type="text"
+            name="name"
+            defaultValue={name}
+            autoFocus
+            onBlur={this.handleEdit}
+          />
+          <input
+            type="email"
+            name="email"
+            defaultValue={email}
+            onChange={this.handleEdit}
+          />
+          <input
+            type="text"
+            name="phone_number"
+            defaultValue={phone_number}
+            onChange={this.handleEdit}
+          />
+          <input
+            type="text"
+            name="image_url"
+            defaultValue={image_url}
+            onChange={this.handleEdit}
+          />
+        </div>
+        {this.state.editing ? (
+          <Button style={{ width: "auto" }} type="submit">
             Finish editing
           </Button>
-        </div>
-        <Link to="/">
-          <Button style={{ background: "teal", width: "auto" }}>
-            Return to contacts
-          </Button>
-        </Link>
+        ) : (
+          <Redirect to="/" />
+        )}
       </ContactForm>
     );
   }
