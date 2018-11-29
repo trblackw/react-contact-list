@@ -23,10 +23,14 @@ const Contact = ({ name, img, email, number, id, location }) => (
           <Icon name="phone" color="blue" />
           <small>{number}</small>
           <br />
-          <Icon name="globe" color="green" />
-          <small>
-            <em>{location}</em>
-          </small>
+          {location && (
+            <Fragment>
+              <Icon name="globe" color="green" />
+              <small>
+                <em>{location}</em>
+              </small>
+            </Fragment>
+          )}
         </div>
         <div className="button-group">
           <Link to={`/${id}`}>
@@ -82,7 +86,8 @@ Contact.propTypes = {
   img: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired
+  id: PropTypes.number.isRequired,
+  location: PropTypes.string.isRequired
 };
 
 export default Contact;

@@ -12,12 +12,13 @@ export default class ContactToEdit extends Component {
     email: "",
     phone_number: "",
     image_url: "",
+    location: "",
     editing: true
   };
 
   componentDidMount = () => {
-    const { name, email, phone_number, image_url, id } = this.props;
-    this.setState({ id, name, email, phone_number, image_url });
+    const { name, email, phone_number, image_url, id, location } = this.props;
+    this.setState({ id, name, email, phone_number, image_url, location });
   };
 
   handleEdit = e => {
@@ -32,7 +33,7 @@ export default class ContactToEdit extends Component {
   };
 
   render() {
-    const { name, email, phone_number, image_url } = this.state;
+    const { name, email, phone_number, image_url, location } = this.state;
     return (
       <ContactForm role="form" onSubmit={this.handleSubmit}>
         <h4>Editting {name}'s contact</h4>
@@ -65,6 +66,12 @@ export default class ContactToEdit extends Component {
             type="text"
             name="image_url"
             defaultValue={image_url}
+            onChange={this.handleEdit}
+          />
+          <input
+            type="text"
+            name="location"
+            defaultValue={location}
             onChange={this.handleEdit}
           />
         </div>
