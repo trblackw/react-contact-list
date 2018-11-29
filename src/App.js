@@ -4,10 +4,8 @@ import "./App.css";
 import Contacts from "./components/Contacts";
 import AddContact from "./components/AddContact";
 import EditContact from "./components/EditContact";
-import ContactsContextProvider from "./components/ContactsContextProvider";
 
 const App = () => (
-  <ContactsContextProvider>
     <Router>
       <Switch>
         <Route exact path="/" component={Contacts} />
@@ -15,7 +13,6 @@ const App = () => (
         <Route path="/:id" component={EditContact} />
       </Switch>
     </Router>
-  </ContactsContextProvider>
 );
 
 export default App;
