@@ -2,43 +2,57 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Contact from "./Contact";
-import { Consumer } from "./ContactsContext";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { fetchContacts } from "../actions";
 
 class Contacts extends Component {
+  componentDidMount = () => {
+    const { fetchContacts } = this.props;
+    fetchContacts();
+  };
+
   render() {
+    const { contacts } = this.props;
     return (
-      <Consumer>
-        {({ contacts }) => (
-          <ContactsContainer>
-            <ContactsHeader>
-              <h1>Contacts</h1>
-            </ContactsHeader>
+      <ContactsContainer>
+        <ContactsHeader>
+          <h1>Contacts</h1>
+        </ContactsHeader>
 
-            <Link to="/add">
-              <Button>Add contact</Button>
-            </Link>
+        <Link to="/add">
+          <Button>Add contact</Button>
+        </Link>
 
-            <div id="contacts">
-              {contacts.map(contact => (
-                <Contact
-                  key={contact.id}
-                  name={contact.name}
-                  email={contact.email}
-                  img={contact.image_url}
-                  number={contact.phone_number}
-                  id={contact.id}
-                  location={contact.location}
-                />
-              ))}
-            </div>
-          </ContactsContainer>
-        )}
-      </Consumer>
+        <div id="contacts">
+          {contacts.map(contact => (
+            <Contact
+              key={contact.id}
+              name={contact.name}
+              email={contact.email}
+              img={contact.image_url}
+              number={contact.phone_number}
+              id={contact.id}
+              location={contact.location}
+            />
+          ))}
+        </div>
+      </ContactsContainer>
     );
   }
 }
 
-export default Contacts;
+const mapStateToProps = state => ({
+  contacts: state.reducer.contacts
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ fetchContacts }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Contacts);
 
 const ContactsContainer = styled.div`
   margin: 0 auto;

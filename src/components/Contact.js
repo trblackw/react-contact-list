@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import { Consumer } from "./ContactsContext";
 import { Link } from "react-router-dom";
 import Toggle from "./elements/Toggle";
 import Modal from "./elements/Modal";
@@ -9,8 +8,6 @@ import PropTypes from "prop-types";
 import Icon from "./elements/Icon";
 
 const Contact = ({ name, img, email, number, id, location }) => (
-  <Consumer>
-    {({ remove }) => (
       <ContactContainer className="drop-shadow">
         <ContactImageContainer>
           <img src={img} alt="" />
@@ -54,7 +51,6 @@ const Contact = ({ name, img, email, number, id, location }) => (
                         margin: "1em"
                       }}
                       onClick={() => {
-                        remove(id);
                         toggle();
                       }}
                     >
@@ -77,8 +73,6 @@ const Contact = ({ name, img, email, number, id, location }) => (
           </Toggle>
         </div>
       </ContactContainer>
-    )}
-  </Consumer>
 );
 
 Contact.propTypes = {

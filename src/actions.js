@@ -1,5 +1,6 @@
 import { formatter } from "./helpers";
 export const FETCH_CONTACTS = "FETCH_CONTACTS";
+export const DELETE_CONTACT = "DELETE_CONTACT";
 
 export const fetchContacts = () => {
   return async dispatch => {
@@ -18,3 +19,8 @@ export const fetchContacts = () => {
     }
   };
 };
+
+export const deleteContact = (contacts, id) => ({
+  type: DELETE_CONTACT,
+  contacts: contacts.filter(contact => contact.id !== id)
+});
