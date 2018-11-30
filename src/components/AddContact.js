@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Consumer } from "./ContactsContext";
 import Icon from "./elements/Icon";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { addContact } from "../actions";
 
-export default class AddContact extends Component {
+class AddContact extends Component {
   state = {
     id: Math.round(Math.random() * 100000000),
     name: "",
@@ -49,83 +51,92 @@ export default class AddContact extends Component {
       [e.target.name]: e.target.value
     });
   };
-  handleSubmit = (e, action) => {
+  handleSubmit = e => {
+    const { addContact, contacts } = this.props;
     e.preventDefault();
     this.contactForm.reset();
-    action(this.state);
+    addContact(contacts, this.state);
   };
 
   render() {
     return (
-      <Consumer>
-        {({ add }) => (
-          <ContactForm
-            onSubmit={e => this.handleSubmit(e, add)}
-            ref={contactForm => (this.contactForm = contactForm)}
+      <ContactForm
+        onSubmit={this.handleSubmit}
+        ref={contactForm => (this.contactForm = contactForm)}
+      >
+        <h1>New Contact</h1>
+        <Link to="/" style={{ position: "absolute", top: 40 }}>
+          <Icon name="back" color="black" className="back-icon" />
+        </Link>
+        <div id="form-add">
+          <label htmlFor="name">Contact Name</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="name"
+            onChange={this.handleInput}
+          />
+          <label htmlFor="email">Contact Email</label>
+          <input
+            type="email"
+            placeholder="email"
+            name="email"
+            onChange={this.handleInput}
+            onBlur={() => this.isValidEmail(this.state.email)}
+          />
+          <label htmlFor="number">Contact Number</label>
+          <input
+            type="text"
+            name="phone_number"
+            placeholder="number"
+            onChange={this.handleInput}
+            ref={number => (this.number = number)}
+            onBlur={() => this.formatNumber(this.number.value)}
+          />
+          <label htmlFor="image">Contact Image</label>
+          <button id="default-img" onClick={this.useDefaultImg}>
+            use default image
+          </button>
+          <input
+            type="text"
+            placeholder="image"
+            name="image_url"
+            onChange={this.handleInput}
+            ref={image => (this.image = image)}
+          />
+        </div>
+        <div className="button-group" style={{ textAlign: "center" }}>
+          <ContactButton
+            type="submit"
+            color="lightblue"
+            onClick={() => {
+              this.addContact();
+            }}
           >
-            <h1>New Contact</h1>
-            <Link to="/" style={{ position: "absolute", top: 40 }}>
-              <Icon name="back" color="black" className="back-icon" />
-            </Link>
-            <div id="form-add">
-              <label htmlFor="name">Contact Name</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="name"
-                onChange={this.handleInput}
-              />
-              <label htmlFor="email">Contact Email</label>
-              <input
-                type="email"
-                placeholder="email"
-                name="email"
-                onChange={this.handleInput}
-                onBlur={() => this.isValidEmail(this.state.email)}
-              />
-              <label htmlFor="number">Contact Number</label>
-              <input
-                type="text"
-                name="phone_number"
-                placeholder="number"
-                onChange={this.handleInput}
-                ref={number => (this.number = number)}
-                onBlur={() => this.formatNumber(this.number.value)}
-              />
-              <label htmlFor="image">Contact Image</label>
-              <button id="default-img" onClick={this.useDefaultImg}>
-                use default image
-              </button>
-              <input
-                type="text"
-                placeholder="image"
-                name="image_url"
-                onChange={this.handleInput}
-                ref={image => (this.image = image)}
-              />
-            </div>
-            <div className="button-group" style={{ textAlign: "center" }}>
-              <ContactButton
-                type="submit"
-                color="lightblue"
-                onClick={() => {
-                  this.addContact();
-                }}
-              >
-                Add
-              </ContactButton>
-              {this.state.contactAdded && (
-                <ContactButton color="lightgreen">
-                  <Link to="/">Return to contacts</Link>
-                </ContactButton>
-              )}
-            </div>
-          </ContactForm>
-        )}
-      </Consumer>
+            Add
+          </ContactButton>
+          {this.state.contactAdded && (
+            <ContactButton color="lightgreen">
+              <Link to="/">Return to contacts</Link>
+            </ContactButton>
+          )}
+        </div>
+      </ContactForm>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  contacts: state.reducer.contacts
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ addContact }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddContact);
 
 export const ContactForm = styled.form`
   margin: 1.5em auto;

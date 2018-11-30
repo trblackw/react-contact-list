@@ -1,27 +1,42 @@
 import React, { Component } from "react";
-import { Consumer } from "./ContactsContext";
 import styled from "styled-components";
 import ContactToEdit from "./ContactToEdit";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { editContact } from "../actions";
 
-export default class EditContact extends Component {
+class EditContact extends Component {
   render() {
+    const { contacts, editContact } = this.props;
     const selectedID = this.props.match.params.id;
+    const contact = contacts.find(cont => cont.id === Number(selectedID));
+
     return (
-      <Consumer>
-        {({ contacts, update }) => {
-          const contact = contacts.find(cont => cont.id === Number(selectedID));
-          return (
-            contact !== undefined && (
-              <ContactContainer className="drop-shadow">
-                   <ContactToEdit {...contact} id={Number(selectedID)} update={update} />
-              </ContactContainer>
-            )
-          );
-        }}
-      </Consumer>
+      contact !== undefined && (
+        <ContactContainer className="drop-shadow">
+          <ContactToEdit
+            {...contact}
+            id={Number(selectedID)}
+            edit={editContact}
+            contacts={contacts}
+          />
+        </ContactContainer>
+      )
     );
   }
 }
+
+const mapStateToProps = state => ({
+  contacts: state.reducer.contacts
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ editContact }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditContact);
 
 const ContactContainer = styled.div`
   margin: 0 auto;

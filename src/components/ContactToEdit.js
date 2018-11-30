@@ -16,7 +16,9 @@ export default class ContactToEdit extends Component {
     editing: true
   };
 
+
   componentDidMount = () => {
+    console.log("contactToEdit Mounted!!");
     const { name, email, phone_number, image_url, id, location } = this.props;
     this.setState({ id, name, email, phone_number, image_url, location });
   };
@@ -29,7 +31,9 @@ export default class ContactToEdit extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.setState({ editing: false }, () => this.props.update(this.state));
+    this.setState({ editing: false }, () =>
+      console.log(this.props.edit(this.props.contacts, this.state.id))
+    );
   };
 
   render() {

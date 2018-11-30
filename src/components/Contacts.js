@@ -25,17 +25,19 @@ class Contacts extends Component {
         </Link>
 
         <div id="contacts">
-          {contacts.map(contact => (
-            <Contact
-              key={contact.id}
-              name={contact.name}
-              email={contact.email}
-              img={contact.image_url}
-              number={contact.phone_number}
-              id={contact.id}
-              location={contact.location}
-            />
-          ))}
+          {contacts.map(
+            ({ id, name, email, image_url, phone_number, location }) => (
+              <Contact
+                key={id}
+                name={name}
+                email={email}
+                img={image_url}
+                number={phone_number}
+                id={id}
+                location={location}
+              />
+            )
+          )}
         </div>
       </ContactsContainer>
     );
