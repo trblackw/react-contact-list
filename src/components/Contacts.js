@@ -6,7 +6,8 @@ import { Consumer } from "./ContactsContext";
 
 class Contacts extends Component {
   render() {
-    return (
+     return (
+       //pass our contacts context state 
       <Consumer>
         {({ contacts }) => (
           <ContactsContainer>

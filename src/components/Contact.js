@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import Icon from "./elements/Icon";
 
 const Contact = ({ name, img, email, number, id, location }) => (
+   //pass the removeContact method defined in context provider
   <Consumer>
     {({ remove }) => (
       <ContactContainer className="drop-shadow">

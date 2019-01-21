@@ -56,7 +56,8 @@ export default class AddContact extends Component {
   };
 
   render() {
-    return (
+     return (
+       //pass the addContact method defined in the context provider via renderprops
       <Consumer>
         {({ add }) => (
           <ContactForm
