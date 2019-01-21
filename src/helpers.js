@@ -1,16 +1,7 @@
-export const reducer = arr => {
-  const newState = arr.reduce((newStateObj, input) => {
-    newStateObj[input.name] =
-      input.value !== input.defaultValue ? input.value : input.defaultValue;
-    return newStateObj;
-  }, {});
-  const { name, email, phone_number, image_url } = newState;
-  return { name, email, phone_number, image_url };
-};
-
 export const formatter = arr => {
   return arr.map(
-    ({ name, location, phone: phone_number, picture: image_url, email }) => ({
+     ({ name, location, phone: phone_number, picture: image_url, email }) => ({
+       //the name and location formatter look ridiculous --default api data comeback in funky casing -- refactor
       id: Math.round(Math.random() * 100000000),
       name: `${name.first[0].toUpperCase()}${name.first
         .split("")
