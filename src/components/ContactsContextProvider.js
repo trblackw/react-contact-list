@@ -34,6 +34,7 @@ export default class ContactsContextProvider extends Component {
     const contactToUpdate = contacts.find(
       contact => contact.id === Number(editedContact.id)
     );
+     //place update contact in same position as it was
     const updatedContacts = contacts.map(contact => {
       if (contact.id === contactToUpdate.id) {
         contact = editedContact;

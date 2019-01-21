@@ -6,7 +6,8 @@ import ContactToEdit from "./ContactToEdit";
 export default class EditContact extends Component {
   render() {
     const selectedID = this.props.match.params.id;
-    return (
+     return (
+       //pass our contacts context and the related updater function from the provider to update a contact 
       <Consumer>
         {({ contacts, update }) => {
           const contact = contacts.find(cont => cont.id === Number(selectedID));

@@ -7,6 +7,7 @@ export default class Icon extends Component {
   };
 
   render() {
+    //reusabled icon component that requires a name and color as props
     switch (this.props.name) {
       case "close":
         return (
